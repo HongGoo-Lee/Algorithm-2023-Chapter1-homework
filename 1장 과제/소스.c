@@ -1,75 +1,84 @@
+/*
+	실습일 : 2023년 3월 21일
+	실습자 : 이홍구
+	 학 번 : 202211286
+	프로그램 설명 : 가짜동전 찾는 프로그램
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-#define ARRAY_SIZE 20
-//오류나서 고쳐야함
-void creat_fake_coin(int a[], int n)
+#define ARRAY_SIZE 10
+#define MAX_RAND 16
+
+void reset_array(int a[], int n)
 {
-	int i, fake_coin;
 	srand((unsigned)time(NULL));
-	fake_coin = rand()%n;
-	for (i = 0; i < n; i++)
+	printf("배열 값 :");
+	for (int i = 0; i < n; i++)
 	{
-		if (i == fake_coin)
-		{
-			a[i] = 0;
-			printf("%d\n", i);
-		}
-		else
-		{
-			a[i] = 1;
-		}
+		a[i] = rand() % MAX_RAND;
+		printf(" %d", a[i]);
 	}
+	printf("\n");
 }
 
-int find_fake_coin(int a[], int start_index, int fin_index)
+void sort_array(int a[], int n)
 {
-	int sum1=0, sum2=0, b,i;
-	b = fin_index - start_index;
-	if (b % 2 == 0)
+	int temp;
+	printf("정렬된 배열 :");
+	for (int i = 0; i < n; i++)
 	{
-		fin_index -= 1;
-		b = fin_index - start_index;		
+		for (int j = i; j < n; j++)
+		{
+			if (a[i] > a[j])
+			{
+				temp = a[i];
+				a[i] = a[j];
+				a[j] = temp;
+			}
+		}
+		printf(" %d", a[i]);
 	}
+	printf("\n");
+}
 
-	for (i = start_index; i <= (b / 2) + start_index; i++)
+int searchK(int a[], int k, int start_idex, int fin_index)
+{
+	int index = (fin_index - start_idex) / 2;
+	if (index == 0)
+		return -1;
+	index += start_idex;
+	if (a[index] == k)
 	{
-		sum1 += a[i];
+		return index;
 	}
-	for (; i <= fin_index; i++)
+	else if (a[index] > k)
 	{
-		sum2 += a[i];
-	}
-
-	if (sum1 == 0)
-	{
-		return start_index;
-	}
-	else if (sum2 == 0)
-	{
-		return fin_index;
-	}
-	else if (sum1 > sum2)
-	{
-		return find_fake_coin(a, b / 2 + 1, fin_index);
-	}
-	else if (sum1 < sum2)
-	{
-		return find_fake_coin(a, start_index, (b / 2) + start_index);
+		return searchK(a, k, start_idex, index);
 	}
 	else
 	{
-		return fin_index+1;
+		return searchK(a, k, index, fin_index);
 	}
 }
 
-void test(void)
+void test()
 {
-	int a[ARRAY_SIZE],index=-1;
-	creat_fake_coin(a, ARRAY_SIZE);
-	index = find_fake_coin(a, 0, ARRAY_SIZE-1);
-	printf("%d번에 있습니다.\n", index);
+	int a[ARRAY_SIZE];
+	int index, K = 10;
+	reset_array(a, ARRAY_SIZE);
+	sort_array(a, ARRAY_SIZE);
+	index = searchK(a, K, 0, 9);
+	if (index < 0)
+	{
+		printf("%d값이 없습니다.", K);
+	}
+	else
+	{
+		printf("%d값이 %d번째에 존재합니다.", a[index], index + 1);
+	}
 }
 
 int main(void)
