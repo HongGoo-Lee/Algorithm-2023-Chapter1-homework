@@ -1,3 +1,9 @@
+/*
+	실습자 : 이홍구
+	 학 번 : 202211286
+	프로그램 설명 : 가장 큰 수를 구하는 프로그램
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

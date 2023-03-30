@@ -1,3 +1,10 @@
+/*
+	실습자 : 이홍구
+	 학 번 : 202211286
+	프로그램 설명 : 정수형 배열에서 임의의 수를 2진탐색으로 찾는 프로그램
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
